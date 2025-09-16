@@ -116,11 +116,17 @@ pipeline {
         }
         stage("trivy vulnerability scan"){
             steps{
-                trivyScan.vulnerability("ikramulhaq6363/solar-system:$GIT_COMMIT")
+                script {
+                    trivyScan.vulnerability("ikramulhaq6363/solar-system:$GIT_COMMIT")
+                }
+                
             }
             post {
                 always {
-                    trivyScan.reportConvertor()
+                    script {
+                        trivyScan.reportConvertor()
+                    }
+                    
 
                     publishHTML([allowMissing: true, alwaysLinkToLastBuild: true, icon: '', keepAll: true, reportDir: './', reportFiles: 'trivy-image-CRITICAL-report.html', reportName: 'trivy Image CRITICAL Report'])
                     publishHTML([allowMissing: true, alwaysLinkToLastBuild: true, icon: '', keepAll: true, reportDir: './', reportFiles: 'trivy-image-MEDIUM-report.html', reportName: 'trivy Image MEDIUM Report'])
