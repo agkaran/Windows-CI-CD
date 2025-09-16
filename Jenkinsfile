@@ -1,4 +1,4 @@
-@Library('IkramUlHaq-lib') _
+@Library('IkramUlHaq-lib@trivyScan') _
 pipeline {
     agent any
     tools {
@@ -114,41 +114,19 @@ pipeline {
                 sh 'docker build -t ikramulhaq6363/solar-system:$GIT_COMMIT .'
             }
         }
-        // stage("trivy vulnerability scan"){
-        //     steps{
-        //         sh '''
-        //             trivy image ikramulhaq6363/solar-system:$GIT_COMMIT \
-        //             --severity LOW,MEDIUM,HIGH \
-        //             --exit-code 0 \
-        //             --quiet \
-        //             --format json -o trivy-image-MEDIUM-report.json
+        stage("trivy vulnerability scan"){
+            steps{
+                trivyScan.vulnerability("ikramulhaq6363/solar-system:$GIT_COMMIT")
+            }
+            post {
+                always {
+                    trivyScan.reportConvertor()
 
-        //             trivy image ikramulhaq6363/solar-system:$GIT_COMMIT \
-        //             --severity CRITICAL \
-        //             --exit-code 1 \
-        //             --quiet \
-        //             --format json -o trivy-image-CRITICAL-report.json
-        //         '''
-        //     }
-        //     post {
-        //         always {
-        //             sh '''
-        //             trivy convert \
-        //                 --format template --template "@/usr/local/share/trivy/templates/html.tpl" \
-        //                 --output trivy-image-MEDIUM-report.html trivy-image-MEDIUM-report.json
-        //             trivy convert \
-        //                 --format template --template "@/usr/local/share/trivy/templates/html.tpl" \
-        //                 --output trivy-image-CRITICAL-report.html trivy-image-CRITICAL-report.json
-        //             trivy convert \
-        //                 --format template --template "@/usr/local/share/trivy/templates/junit.tpl" \
-        //                 --output trivy-image-MEDIUM-report.xml trivy-image-MEDIUM-report.json
-        //             trivy convert \
-        //                 --format template --template "@/usr/local/share/trivy/templates/junit.tpl" \
-        //                 --output trivy-image-CRITICAL-report.xml trivy-image-CRITICAL-report.json
-        //             '''
-        //         }
-        //     }
-        // }
+                    publishHTML([allowMissing: true, alwaysLinkToLastBuild: true, icon: '', keepAll: true, reportDir: './', reportFiles: 'trivy-image-CRITICAL-report.html', reportName: 'trivy Image CRITICAL Report'])
+                    publishHTML([allowMissing: true, alwaysLinkToLastBuild: true, icon: '', keepAll: true, reportDir: './', reportFiles: 'trivy-image-MEDIUM-report.html', reportName: 'trivy Image MEDIUM Report'])
+                }
+            }
+        }
         // stage("push to docker hub"){
         //     when {
         //         branch 'Feature_Branch'
