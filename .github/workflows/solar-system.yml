@@ -15,6 +15,14 @@ jobs:
         - name: Checkout Repository
           uses: actions/checkout@v4
 
+        - name: Cache node modules
+          uses: actions/cache@v4
+          env:
+            cache-name: cache-node-modules
+          with:
+            path: node_modules
+            key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('package-lock.json') }}
+          
         - name: Setup NodeJS Version
           uses: actions/setup-node@v3
           with:
@@ -39,7 +47,15 @@ jobs:
       steps:
         - name: Checkout Repository
           uses: actions/checkout@v4
-          
+
+        - name: Cache node modules
+          uses: actions/cache@v4
+          env:
+            cache-name: cache-node-modules
+          with:
+            path: node_modules
+            key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('package-lock.json') }}
+            
         - name: Setup NodeJS Version
           uses: actions/setup-node@v3
           with:
@@ -58,4 +74,5 @@ jobs:
             name: Code-Coverage-Result
             path: coverage
             retention-days: 5
+
 
