@@ -6,7 +6,10 @@ on:
     branches:
       - main
       - 'feature/*'
-    
+env:
+  MONGO_URI: "demo"
+  MONGO_USERNAME: "abc"
+  MONGO_PASSWORD: "abcd1234"
 jobs:
     unit-testing:
         name: Unit Testing
@@ -101,4 +104,5 @@ jobs:
               ghcr.io/${{ github.actor }}/solar-system:${{ github.sha }}
 
           
+
 
