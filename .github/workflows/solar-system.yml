@@ -101,8 +101,9 @@ jobs:
             context: .
             push: true
             tags: |
-              ghcr.io/${{ github.actor }}/solar-system:${{ github.sha }}
+              ghcr.io/${{ github.actor }}/Windows-CI-CD:${{ github.sha }}
 
           
+
 
 
