@@ -101,9 +101,10 @@ jobs:
             context: .
             push: true
             tags: |
-              ghcr.io/${{ github.actor }}/Windows-CI-CD:${{ github.sha }}
+              ghcr.io/${{ github.actor }}/windows-ci-cd:${{ github.sha }}
 
           
+
 
 
 
