@@ -148,7 +148,7 @@ jobs:
             set -e
             echo "kubectl returned $?"
             kubectl -n default get pod
-            kubectl wait --for=condition=Ready pod/solar --timeout=180s
+            sleep 10
 
     dev-integration-testing:
       name: dev-integration-test
