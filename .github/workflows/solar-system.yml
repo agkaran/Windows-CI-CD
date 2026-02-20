@@ -143,10 +143,6 @@ jobs:
             username: ${{ github.actor }}
             password: ${{ secrets.GITHUB_TOKEN }}
 
-        - name: Load image into Kind
-          run: |
-            kind load docker-image ghcr.io/${{ github.actor }}/windows-ci-cd:${{ github.sha }}
-
         - name: application deploy
           run: |
             sleep 60
