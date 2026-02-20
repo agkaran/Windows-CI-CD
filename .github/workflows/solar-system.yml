@@ -157,6 +157,7 @@ jobs:
             echo "kubectl returned $?"
             kubectl -n default get pod
             sleep 10
+            kubectl describe pod solar || true
 
     dev-integration-testing:
       name: dev-integration-test
@@ -165,6 +166,7 @@ jobs:
       steps:
         - name: Port forward app
           run: |
+            kubectl -n default get pod
             kubectl port-forward pod/solar 8080:8080 &
             sleep 10
         - name: Health check
